@@ -125,3 +125,11 @@ public class FirstController {
     }
 }
 ```
+
+## lesson 18 - HTTP
+- GET
+![img.png](mdResources/get.png)
+- POST
+![img.png](mdResources/post.png)
+- Сравнение GET/POST
+![img.png](mdResources/get-post.png)
