@@ -33,4 +33,21 @@
   </servlet-mapping>
 </web-app>
 ```
-
+### ВАЖНО, ЧТОБЫ ВЕРСИИ БЫЛИ СОПОСТАВИМЫ
+```xml
+<dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>5.2.1.RELEASE</version>
+    </dependency>
+```
+- Первичная настойка контроллера:
+```java
+@Controller
+public class HelloController {
+  @GetMapping("/hello")
+  public String sayHello() {
+    return "hello_world";
+  }
+}
+```
