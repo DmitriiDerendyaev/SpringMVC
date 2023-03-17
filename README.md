@@ -51,3 +51,56 @@ public class HelloController {
   }
 }
 ```
+
+## lesson 16 - конфигурация приложения
+- Создадим класс SpringConfig.java, в котором будет расположена конфигурация приложения, заменяющая xml
+- Это делается для того, чтобы настроить вместо стандартного шаблонизатора шаблонизатор Thymeleaf
+- С помощью `@Autowired` внедрена зависимость applicationContext
+```java
+@Configuration
+@ComponentScan("ru.derendyaev.SpringMVC")
+@EnableWebMvc
+public class SpringConfig implements WebMvcConfigurer {
+
+    private final ApplicationContext applicationContext;
+
+    @Autowired
+    public SpringConfig(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(applicationContext);
+        templateResolver.setPrefix("/WEB-INF/views/");
+        templateResolver.setSuffix(".html");
+        return templateResolver;
+    }
+
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setEnableSpringELCompiler(true);
+        return templateEngine;
+    }
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngine());
+        registry.viewResolver(resolver);
+    }
+}
+```
+- Вместо `web.xml` теперь у нас `MySpringMvcDispatcherInitializer.java`, который в методах будет указывать на необходимые внедрения
+- Теперь конфигурация Сервлета находится getServletConfigClasses:
+```java
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[] {SpringConfig.class};
+    }
+```
+### ВАЖНО: 
+проследить, чтоб не было лишних зависимостей в `target/SpringMVC/WEB-INF/lib`
