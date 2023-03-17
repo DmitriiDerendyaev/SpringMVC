@@ -104,3 +104,24 @@ public class SpringConfig implements WebMvcConfigurer {
 ```
 ### ВАЖНО: 
 проследить, чтоб не было лишних зависимостей в `target/SpringMVC/WEB-INF/lib`
+
+## lesson 17 - controller
+![img.png](mdResources/1.png)
+
+- Настройка контроллеров через различные аннотации:
+```java
+@Controller
+@RequestMapping("/first")
+public class FirstController {
+    @GetMapping("/hello")
+    public String helloPage(){
+        return "first/hello";
+    }
+
+    @GetMapping("/goodbye")
+    public String gooByePage(){
+        return "first/goodbye";
+
+    }
+}
+```
