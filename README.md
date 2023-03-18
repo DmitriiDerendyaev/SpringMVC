@@ -163,3 +163,33 @@ public class FirstController {
 ```html
 <a href="/first/hello?name=Dima&surname=Derendyaev">Request With Param</a>
 ```
+
+## lesson - 20 Модель, передача данных от контроллера к представлению
+![img.png](mdResources/modelToView.png)
+- Реализовать калькулятор, в который будет передаваться запрос `http://localhost:8080/first/calculator?a=5&b=5&action=multiplication`
+```java
+@GetMapping("/calculator")
+    public String calculator(@RequestParam(value = "a", required = false) String a,
+                             @RequestParam(value = "b", required = false) String b,
+                             @RequestParam(value = "action", required = false) String action,
+                             Model calcModel){
+        switch (action){
+            case "multiplication":
+                calcModel.addAttribute("answer", "Answer of multiplication: " + (Integer.parseInt(a) * Integer.parseInt(b)));
+                break;
+            case "addition":
+                calcModel.addAttribute("answer", "Answer of addition: " + (Integer.parseInt(a) + Integer.parseInt(b)));
+                break;
+            case "subtraction":
+                calcModel.addAttribute("answer", "Answer of subtraction: " + (Integer.parseInt(a) - Integer.parseInt(b)));
+                break;
+            case "division":
+                calcModel.addAttribute("answer", "Answer of division: " + (Integer.parseInt(a) / Integer.parseInt(b)));
+                break;
+            default:
+                calcModel.addAttribute("answer", "Incorrect action");
+        }
+
+        return "calc/answer";
+    }
+```
