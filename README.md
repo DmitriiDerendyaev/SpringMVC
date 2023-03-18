@@ -126,6 +126,9 @@ public class FirstController {
 }
 ```
 
+- `RequestMapping` накладывает при применении общий шаблон на запрос .../first/... 
+
+
 ## lesson 18 - HTTP
 - GET
 ![img.png](mdResources/get.png)
@@ -133,3 +136,30 @@ public class FirstController {
 ![img.png](mdResources/post.png)
 - Сравнение GET/POST
 ![img.png](mdResources/get-post.png)
+
+## lesson - 19 - GET - запрос
+- Данные можно получить с помощью `HttpServletRequest`, который содержит в себе много информации, включая параметры запроса.
+- Этот вариант не совсем верный, т.к. содержит в себе много лишних параметров:
+```java
+@GetMapping("/hello")
+    public String helloPage(HttpServletRequest request){
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+
+        System.out.println("Name: " + name + ", surname: " + surname);
+        return "first/hello";
+    }
+```
+- Работа с аннотацией `@RequestParam`, где можно указать сами переменные, куда необходимо положить значения запроса по ключам:
+```java
+    public String helloPage(@RequestParam("name") String name,
+                            @RequestParam("surname") String surname){
+        System.out.println("Name: " + name + ", surname: " + surname);
+        return "first/hello";
+    }
+```
+ВАЖНО: `@RequestParam` требует наличие параметров, иначе 404. Это можно изменить, если сделать так: `@RequestParam(value = "name", required = false) String name,...`
+- А передать ссылку можно следующим образом:
+```html
+<a href="/first/hello?name=Dima&surname=Derendyaev">Request With Param</a>
+```
